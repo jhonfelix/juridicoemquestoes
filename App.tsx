@@ -1046,17 +1046,15 @@ const App = () => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session) {
-        if (!user || user.id !== session.user.id) {
-             await loadUserProfile(session.user.id);
-        }
-        if (gameState === GameState.AUTH) setGameState(GameState.DASHBOARD);
+        await loadUserProfile(session.user.id);
+        setGameState(GameState.DASHBOARD);
       } else {
         setUser(null);
         setGameState(GameState.AUTH);
       }
     });
     return () => subscription.unsubscribe();
-  }, [gameState, user]); 
+  }, []); 
 
   const handleLogout = async () => {
       await supabase.auth.signOut();
